@@ -1,24 +1,25 @@
 CC = g++
 CXXFLAGS = -fPIC
-rutapython = /usr/include/python3.8
-libreria = _libgrafo.so
+PYTHON_INCLUDE = /usr/include/python3.8
+PYTHON_LIB = /usr/lib/python3.8/config-3.8-x86_64-linux-gnu
+TARGET = _libgrafo.so
 
-all: $(libreria)
+all: $(TARGET)
 
-$(libreria): grafo_wrap.o grafo.o
-	$(CC) -shared grafo_wrap.o grafo.o -o $(libreria) -lpython3.8
+$(TARGET): grafo_wrap.o grafo.o
+	$(CC) -shared grafo_wrap.o grafo.o -o $(TARGET) -L$(PYTHON_LIB) -lpython3.8
+
+grafo_wrap.o: grafo_wrap.cxx
+	$(CC) $(CXXFLAGS) -c grafo_wrap.cxx -o grafo_wrap.o -I$(PYTHON_INCLUDE)
 
 grafo_wrap.cxx: grafo.i grafo.h
 	swig -python -c++ grafo.i
-
-grafo_wrap.o: grafo_wrap.cxx
-	$(CC) $(CXXFLAGS) -c grafo_wrap.cxx -o grafo_wrap.o -I$(rutapython)
 
 grafo.o: grafo.cpp grafo.h
 	$(CC) $(CXXFLAGS) -c -o grafo.o grafo.cpp
 
 clean:
-	rm -f *.o $(libreria) grafo_wrap.cxx grafo.py
+	rm -f *.o $(TARGET) grafo_wrap.cxx libgrafo.py
 	rm -rf __pycache__
 
 .PHONY: all clean

@@ -1,12 +1,9 @@
-%module _libgrafo
+%module libgrafo
 
 %{
 #include "grafo.h"
 %}
 
-%include "std_vector.i"  // Incluir la interfaz estándar de SWIG para std::vector
-
-%template(IntVector) std::vector<int>;  // Especialización para std::vector<int>
-
-%include "grafo.h"  // Incluir tu archivo de cabecera personalizado
-
+%include "std_vector.i"  
+%template(IntVector) std::vector<int>;  
+%include "grafo.h"
