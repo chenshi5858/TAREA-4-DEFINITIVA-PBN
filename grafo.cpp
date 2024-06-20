@@ -48,27 +48,6 @@ bool Grafo::hay_arco(int d, int h) {
     return false;
 }
 
-// bool Grafo::hay_camino(int d, int h){
-//     std::vector<std::vector<int>>copia_lista_adyacencias(lista_adyacencias);
-//     bool encontrado = false;
-//     int contador = 0;
-//     int actual = d;
-//     while(!encontrado){
-//         if (actual == copia_lista_adyacencias[contador][0]){
-//             //quiero eliminar copia_lista_adyacencias[contador]
-//             actual = copia_lista_adyacencias[contador][1];
-//             copia_lista_adyacencias.erase(copia_lista_adyacencias.begin()+contador);
-//             contador=0;
-//             continue;
-//             }
-//         else if (actual == h) encontrado = true;
-//         else if ( contador == copia_lista_adyacencias.size()) break;
-//         contador++;
-//     }
-//     return encontrado;
-
-// }
-
 
 
 bool Grafo::hay_camino(int d, int h) {

@@ -1,30 +1,24 @@
-# Nombre del ejecutable final
-TARGET = wemo.exe
+CC = g++
+CXXFLAGS = -fPIC
+rutapython = /usr/include/python3.8
+libreria = _libgrafo.so
 
-# Compilador a utilizar (g++ en MinGW)
-CXX = g++
+all: $(libreria)
 
-# Opciones de compilación
-CXXFLAGS = -std=c++11 -Wall
+$(libreria): grafo_wrap.o grafo.o
+	$(CC) -shared grafo_wrap.o grafo.o -o $(libreria) -lpython3.8
 
-# Archivos fuente
-SRCS = grafo.cpp main.cpp
+grafo_wrap.cxx: grafo.i grafo.h
+	swig -python -c++ grafo.i
 
-# Archivos objeto generados a partir de los archivos fuente
-OBJS = $(SRCS:.cpp=.o)
+grafo_wrap.o: grafo_wrap.cxx
+	$(CC) $(CXXFLAGS) -c grafo_wrap.cxx -o grafo_wrap.o -I$(rutapython)
 
-# Regla principal: compilación y enlazado
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+grafo.o: grafo.cpp grafo.h
+	$(CC) $(CXXFLAGS) -c -o grafo.o grafo.cpp
 
-# Regla para la compilación de cada archivo objeto
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# Regla para limpiar archivos objeto y ejecutable
 clean:
-	del $(OBJS) $(TARGET)
+	rm -f *.o $(libreria) grafo_wrap.cxx grafo.py
+	rm -rf __pycache__
 
-# Regla para compilar y ejecutar el programa
-run: $(TARGET)
-	./$(TARGET)
+.PHONY: all clean
