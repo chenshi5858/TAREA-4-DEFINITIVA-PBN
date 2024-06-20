@@ -15,7 +15,7 @@ Grafo::Grafo(int n){
 int Grafo::add_nodo(){
     n_nodos+=1;
     nodos.push_back(n_nodos);
-    lista_a_matriz();
+    //lista_a_matriz();
     if (matriz.size()!=0){
         if (verificar_matriz_a_lista()){
             matriz_a_lista();
